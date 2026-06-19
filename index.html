@@ -3,101 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MorfoLab</title>
+    <title>MorfoLab - Bethesda</title>
     <style>
-        :root { --tq: #00A896; --cr: #FF5A5F; --bg: #F4F6F8; --wt: #FFF; }
-        body { font-family: sans-serif; background: var(--bg); margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        header { background: var(--wt); padding: 15px; text-align: center; color: var(--tq); font-weight: 800; border-bottom: 1px solid #ddd; }
-        .bar { height: 4px; width: 100%; background: #e0e0e0; }
-        #prog { height: 100%; width: 0%; background: var(--tq); transition: 0.3s; }
-        main { flex: 1; padding: 15px; overflow-y: auto; text-align: center; padding-bottom: 80px; }
-        .img-box { width: 100%; height: 220px; background: #000; border-radius: 12px; margin-bottom: 15px; overflow: hidden; border: 2px solid var(--wt); }
-        img { width: 100%; height: 100%; object-fit: contain; }
-        h2 { font-size: 1rem; margin: 10px 0; }
-        .btn-pista { background: none; border: 1px solid var(--tq); color: var(--tq); padding: 5px 15px; border-radius: 15px; cursor: pointer; margin-bottom: 10px; }
-        #pista { display: none; background: #E6F6F4; padding: 10px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 10px; border: 1px dashed var(--tq); }
-        .opts { display: grid; gap: 10px; }
-        button.opt { background: var(--wt); border: 2px solid #ddd; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; }
-        #fb { display: none; margin-top: 15px; padding: 15px; border-radius: 10px; background: #FFF0F0; border-left: 5px solid var(--cr); color: #333; text-align: left; }
-        #next { display: none; width: 100%; background: #333; color: var(--wt); border: none; padding: 15px; border-radius: 10px; margin-top: 10px; font-weight: bold; }
-        footer { position: fixed; bottom: 0; width: 100%; background: var(--wt); display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #ddd; font-size: 0.7rem; }
-        .nav { color: #aaa; text-decoration: none; text-align: center; }
-        .nav.active { color: var(--tq); }
+        body { font-family: Arial, sans-serif; background-color: #F4F6F8; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .header { background-color: #00A896; color: white; width: 100%; text-align: center; padding: 15px 0; font-weight: bold; font-size: 20px; letter-spacing: 1px; }
+        .card { background: white; width: 90%; max-width: 500px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top: 20px; padding: 15px; box-sizing: border-box; text-align: center; }
+        .img-container { background-color: #1A1A1A; width: 100%; height: 250px; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 15px; }
+        .img-container img { width: 100%; height: 100%; object-fit: contain; }
+        .pregunta { font-size: 16px; font-weight: bold; color: #333; margin-bottom: 15px; }
+        .btn-pista { background-color: transparent; border: 1px solid #00A896; color: #00A896; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 14px; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 5px; }
+        .pista-texto { display: none; background-color: #E6F6F4; border-left: 4px solid #00A896; padding: 10px; border-radius: 4px; font-size: 14px; color: #555; margin-bottom: 15px; text-align: left; }
+        .alternativas { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        .btn-alt { background-color: white; border: 1px solid #DDD; padding: 12px; border-radius: 8px; font-size: 15px; text-align: left; cursor: pointer; transition: 0.2s; font-weight: 500; }
+        .btn-alt:hover { background-color: #F9F9F9; }
+        .retroalimentacion { display: none; background-color: #FFEAEA; border: 1px solid #FF5A5F; color: #D9383A; padding: 12px; border-radius: 8px; margin-top: 15px; font-size: 14px; text-align: left; }
+        .btn-siguiente { display: none; background-color: #00A896; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-size: 16px; font-weight: bold; margin-top: 15px; cursor: pointer; }
+        .nav-bar { background-color: white; border-top: 1px solid #EEE; position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); }
+        .nav-item { color: #888; font-size: 12px; text-decoration: none; text-align: center; font-weight: bold; }
+        .nav-item.active { color: #00A896; }
     </style>
 </head>
 <body>
-    <header>MORFOLAB</header>
-    <div class="bar"><div id="prog"></div></div>
-    <main>
-        <div class="img-box"><img id="img" src="" alt="Atlas"></div>
-        <h2>¿Cuál es el diagnóstico o informe correcto?</h2>
+
+    <div class="header">MORFOLAB</div>
+
+    <div class="card">
+        <div class="img-container">
+            <img id="campo-microscopico" src="" alt="Cargando frotis...">
+        </div>
+        <div class="pregunta">¿Cuál es el diagnóstico o informe correcto para este campo microscópico?</div>
+        
         <button class="btn-pista" onclick="togglePista()">🔍 Solicitar Pista</button>
-        <div id="pista"></div>
-        <div class="opts" id="opts"></div>
-        <div id="fb"></div>
-        <button id="next" onclick="nuevoCaso()">Siguiente Pregunta</button>
-    </main>
-    <footer>
-        <div class="nav active"><b>Test</b></div>
-        <div class="nav"><b>MorfoWiki</b></div>
-        <div class="nav"><b>Comunidad</b></div>
-    </footer>
+        <div id="pista-caja" class="pista-texto"></div>
 
-<script>
-    const casos = [
-        { c: 'A', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_nilm.jpg', p: 'Células normales con núcleos uniformes y citoplasma maduro.' },
-        { c: 'A', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_inflammation.jpg', p: 'Abundantes PMN y cambios reactivos benignos.' },
-        { c: 'B', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_ascus1.jpg', p: 'Agrandamiento nuclear moderado (2.5-3x) sin irregularidad marcada.' },
-        { c: 'B', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_ascus2.jpg', p: 'Atipia escamosa leve que no permite asegurar lesión.' },
-        { c: 'B', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_asch1.jpg', p: 'Células pequeñas con alta relación núcleo/citoplasma; sugiere alto grado.' },
-        { c: 'C', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_lsil1.jpg', p: 'Coilocitos clásicos con halo perinuclear neto y núcleo hipercromático.' },
-        { c: 'C', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_lsil2.jpg', p: 'Multinucleación y núcleos gigantes compatibles con efecto VPH.' },
-        { c: 'D', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_hsil1.jpg', p: 'Células pequeñas, escaso citoplasma y cromatina grumosa irregular.' },
-        { c: 'D', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_hsil2.jpg', p: 'Amontonamiento nuclear y membranas nucleares lobuladas (sincitios).' }
-    ];
+        <div class="alternativas">
+            <button class="btn-alt" onclick="verificarRespuesta('A')">A) NILM</button>
+            <button class="btn-alt" onclick="verificarRespuesta('B')">B) ASC-US / ASC-H</button>
+            <button class="btn-alt" onclick="verificarRespuesta('C')">C) LSIL</button>
+            <button class="btn-alt" onclick="verificarRespuesta('D')">D) HSIL</button>
+        </div>
 
-    let actual = {};
-    const n = { A: 'NILM', B: 'ASC-US / ASC-H', C: 'LSIL', D: 'HSIL' };
+        <div id="retro" class="retroalimentacion"></div>
+        <button id="btn-sig" class="btn-siguiente" onclick="siguienteCaso()">Siguiente Pregunta ➡️</button>
+    </div>
 
-    function nuevoCaso() {
-        actual = casos[Math.floor(Math.random() * casos.length)];
-        document.getElementById('img').src = actual.i;
-        document.getElementById('pista').innerText = actual.p;
-        document.getElementById('pista').style.display = 'none';
-        document.getElementById('fb').style.display = 'none';
-        document.getElementById('next').style.display = 'none';
-        document.getElementById('prog').style.width = Math.random() * 100 + '%';
-        const container = document.getElementById('opts');
-        container.innerHTML = '';
-        ['A','B','C','D'].forEach(letra => {
-            const b = document.createElement('button');
-            b.className = 'opt';
-            b.innerText = `${letra}) ${n[letra]}`;
-            b.onclick = () => validar(letra, b);
-            container.appendChild(b);
-        });
-    }
+    <div style="height: 70px;"></div>
 
-    function togglePista() {
-        const p = document.getElementById('pista');
-        p.style.display = p.style.display === 'block' ? 'none' : 'block';
-    }
+    <div class="nav-bar">
+        <a href="#" class="nav-item active"><div>🔬</div>Test</a>
+        <a href="#" class="nav-item"><div>📚</div>MorfoWiki</a>
+        <a href="#" class="nav-item"><div>💬</div>Comunidad</a>
+    </div>
 
-    function validar(v, btn) {
-        if (document.getElementById('next').style.display === 'block') return;
-        const fb = document.getElementById('fb');
-        fb.style.display = 'block';
-        if (v === actual.c) {
-            btn.style.background = '#00A896'; btn.style.color = '#FFF';
-            fb.innerHTML = `<b>¡Excelente!</b> Diagnóstico impecable.`;
-        } else {
-            btn.style.background = '#FF5A5F'; btn.style.color = '#FFF';
-            fb.innerHTML = `<b>Casi...</b> Es <b>${n[actual.c]}</b>. ${actual.p}`;
+    <script>
+        const bancoCasos = [
+            {
+                categoria: "A", // NILM
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Normal_u_intermediate_squamous_epithelial_cells_repsi_1_2.jpg/640px-Normal_u_intermediate_squamous_epithelial_cells_repsi_1_2.jpg",
+                pista: "Células superficiales e intermedias normales con núcleos uniformes, cromatina fina y citoplasma maduro transparente.",
+                retro: "¡Impecable! Es un NILM. Se observan células escamosas normales intermedias y superficiales sin ninguna alteración de atipia."
+            },
+            {
+                categoria: "C", // LSIL
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Koilocytes_repsi_4.jpg/640px-Koilocytes_repsi_4.jpg",
+                pista: "Coilocitos clásicos con halo perinuclear neto, borde denso de citoplasma y agrandamiento nuclear marcado.",
+                retro: "¡Excelente ojo clínico! Es un LSIL. El halo perinuclear gigante y el núcleo hipercromático (coilocito) gritan efecto por VPH."
+            },
+            {
+                categoria: "D", // HSIL
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/High_grade_squamous_intraepithelial_lesion_repsi_3.jpg/640px-High_grade_squamous_intraepithelial_lesion_repsi_3.jpg",
+                pista: "Células pequeñas con marcada pérdida de citoplasma, alta relación núcleo/citoplasma y cromatina grumosa irregular.",
+                retro: "¡Perfecto! Es un HSIL (Alto Grado). Fíjate en la pérdida drástica de citoplasma y la irregularidad de la membrana del núcleo."
+            }
+        ];
+
+        let casoActual = {};
+
+        function cargarCaso() {
+            const indice = Math.floor(Math.random() * bancoCasos.length);
+            casoActual = bancoCasos[indice];
+            
+            document.getElementById("campo-microscopico").src = casoActual.url;
+            document.getElementById("pista-caja").innerText = casoActual.pista;
+            document.getElementById("pista-caja").style.display = "none";
+            document.getElementById("retro").style.display = "none";
+            document.getElementById("btn-sig").style.display = "none";
+            
+            const botones = document.querySelectorAll(".btn-alt");
+            botones.forEach(btn => {
+                btn.style.backgroundColor = "white";
+                btn.style.color = "#333";
+                btn.style.borderColor = "#DDD";
+                btn.disabled = false;
+            });
         }
-        document.getElementById('next').style.display = 'block';
-    }
 
-    window.onload = nuevoCaso;
-</script>
+        function togglePista() {
+            const caja = document.getElementById("pista-caja");
+            caja.style.display = caja.style.display === "none" ? "block" : "none";
+        }
+
+        function verificarRespuesta(opcion) {
+            const botones = document.querySelectorAll(".btn-alt");
+            botones.forEach(btn => btn.disabled = true);
+            
+            const mapaBotones = { 'A': 0, 'B': 1, 'C': 2, 'D': 3 };
+            const botonPresionado = botones[mapaBotones[opcion]];
+            
+            if(opcion === casoActual.categoria) {
+                botonPresionado.style.backgroundColor = "#00A896";
+                botonPresionado.style.color = "white";
+                botonPresionado.style.borderColor = "#00A896";
+            } else {
+                botonPresionado.style.backgroundColor = "#FF5A5F";
+                botonPresionado.style.color = "white";
+                botonPresionado.style.borderColor = "#FF5A5F";
+                
+                const botonCorrecto = buttons = botones[mapaBotones[casoActual.categoria]];
+                botonCorrecto.style.backgroundColor = "#00A896";
+                botonCorrecto.style.color = "white";
+                botonCorrecto.style.borderColor = "#00A896";
+            }
+            
+            document.getElementById("retro").innerText = casoActual.retro;
+            document.getElementById("retro").style.display = "block";
+            document.getElementById("btn-sig").style.display = "block";
+        }
+
+        function siguienteCaso() {
+            cargarCaso();
+        }
+
+        // Cargar el primer caso al abrir la página
+        window.onload = cargarCaso;
+    </script>
 </body>
 </html>
