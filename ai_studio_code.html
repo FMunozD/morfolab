@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MorfoLab</title>
+    <style>
+        :root { --tq: #00A896; --cr: #FF5A5F; --bg: #F4F6F8; --wt: #FFF; }
+        body { font-family: sans-serif; background: var(--bg); margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        header { background: var(--wt); padding: 15px; text-align: center; color: var(--tq); font-weight: 800; border-bottom: 1px solid #ddd; }
+        .bar { height: 4px; width: 100%; background: #e0e0e0; }
+        #prog { height: 100%; width: 0%; background: var(--tq); transition: 0.3s; }
+        main { flex: 1; padding: 15px; overflow-y: auto; text-align: center; padding-bottom: 80px; }
+        .img-box { width: 100%; height: 220px; background: #000; border-radius: 12px; margin-bottom: 15px; overflow: hidden; border: 2px solid var(--wt); }
+        img { width: 100%; height: 100%; object-fit: contain; }
+        h2 { font-size: 1rem; margin: 10px 0; }
+        .btn-pista { background: none; border: 1px solid var(--tq); color: var(--tq); padding: 5px 15px; border-radius: 15px; cursor: pointer; margin-bottom: 10px; }
+        #pista { display: none; background: #E6F6F4; padding: 10px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 10px; border: 1px dashed var(--tq); }
+        .opts { display: grid; gap: 10px; }
+        button.opt { background: var(--wt); border: 2px solid #ddd; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        #fb { display: none; margin-top: 15px; padding: 15px; border-radius: 10px; background: #FFF0F0; border-left: 5px solid var(--cr); color: #333; text-align: left; }
+        #next { display: none; width: 100%; background: #333; color: var(--wt); border: none; padding: 15px; border-radius: 10px; margin-top: 10px; font-weight: bold; }
+        footer { position: fixed; bottom: 0; width: 100%; background: var(--wt); display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #ddd; font-size: 0.7rem; }
+        .nav { color: #aaa; text-decoration: none; text-align: center; }
+        .nav.active { color: var(--tq); }
+    </style>
+</head>
+<body>
+    <header>MORFOLAB</header>
+    <div class="bar"><div id="prog"></div></div>
+    <main>
+        <div class="img-box"><img id="img" src="" alt="Atlas"></div>
+        <h2>¿Cuál es el diagnóstico o informe correcto?</h2>
+        <button class="btn-pista" onclick="togglePista()">🔍 Solicitar Pista</button>
+        <div id="pista"></div>
+        <div class="opts" id="opts"></div>
+        <div id="fb"></div>
+        <button id="next" onclick="nuevoCaso()">Siguiente Pregunta</button>
+    </main>
+    <footer>
+        <div class="nav active"><b>Test</b></div>
+        <div class="nav"><b>MorfoWiki</b></div>
+        <div class="nav"><b>Comunidad</b></div>
+    </footer>
+
+<script>
+    const casos = [
+        { c: 'A', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_nilm.jpg', p: 'Células normales con núcleos uniformes y citoplasma maduro.' },
+        { c: 'A', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_inflammation.jpg', p: 'Abundantes PMN y cambios reactivos benignos.' },
+        { c: 'B', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_ascus1.jpg', p: 'Agrandamiento nuclear moderado (2.5-3x) sin irregularidad marcada.' },
+        { c: 'B', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_ascus2.jpg', p: 'Atipia escamosa leve que no permite asegurar lesión.' },
+        { c: 'B', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_asch1.jpg', p: 'Células pequeñas con alta relación núcleo/citoplasma; sugiere alto grado.' },
+        { c: 'C', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_lsil1.jpg', p: 'Coilocitos clásicos con halo perinuclear neto y núcleo hipercromático.' },
+        { c: 'C', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_lsil2.jpg', p: 'Multinucleación y núcleos gigantes compatibles con efecto VPH.' },
+        { c: 'D', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_hsil1.jpg', p: 'Células pequeñas, escaso citoplasma y cromatina grumosa irregular.' },
+        { c: 'D', i: 'https://images.pathologyoutlines.com/files/cervix_cytology_hsil2.jpg', p: 'Amontonamiento nuclear y membranas nucleares lobuladas (sincitios).' }
+    ];
+
+    let actual = {};
+    const n = { A: 'NILM', B: 'ASC-US / ASC-H', C: 'LSIL', D: 'HSIL' };
+
+    function nuevoCaso() {
+        actual = casos[Math.floor(Math.random() * casos.length)];
+        document.getElementById('img').src = actual.i;
+        document.getElementById('pista').innerText = actual.p;
+        document.getElementById('pista').style.display = 'none';
+        document.getElementById('fb').style.display = 'none';
+        document.getElementById('next').style.display = 'none';
+        document.getElementById('prog').style.width = Math.random() * 100 + '%';
+        const container = document.getElementById('opts');
+        container.innerHTML = '';
+        ['A','B','C','D'].forEach(letra => {
+            const b = document.createElement('button');
+            b.className = 'opt';
+            b.innerText = `${letra}) ${n[letra]}`;
+            b.onclick = () => validar(letra, b);
+            container.appendChild(b);
+        });
+    }
+
+    function togglePista() {
+        const p = document.getElementById('pista');
+        p.style.display = p.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function validar(v, btn) {
+        if (document.getElementById('next').style.display === 'block') return;
+        const fb = document.getElementById('fb');
+        fb.style.display = 'block';
+        if (v === actual.c) {
+            btn.style.background = '#00A896'; btn.style.color = '#FFF';
+            fb.innerHTML = `<b>¡Excelente!</b> Diagnóstico impecable.`;
+        } else {
+            btn.style.background = '#FF5A5F'; btn.style.color = '#FFF';
+            fb.innerHTML = `<b>Casi...</b> Es <b>${n[actual.c]}</b>. ${actual.p}`;
+        }
+        document.getElementById('next').style.display = 'block';
+    }
+
+    window.onload = nuevoCaso;
+</script>
+</body>
+</html>
