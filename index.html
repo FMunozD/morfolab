@@ -31,7 +31,7 @@
     <div class="card">
         <div class="img-container">
             <div class="micro-overlay"></div>
-            <img id="campo-microscopico" src="" alt="Cargando frotis seguro...">
+            <img id="campo-microscopico" src="" alt="Cargando frotis Bethesda real...">
         </div>
         <div class="pregunta">¿Cuál es el diagnóstico o informe correcto para este campo microscópico?</div>
         
@@ -58,31 +58,37 @@
     </div>
 
     <script>
-        // BANCO CON IMÁGENES COMPRIMIDAS EN TEXTO BASE64 NATIVO (100% INMUNES A BLOQUEOS)
+        // ENLACES DIRECTOS DESDE EL SERVIDOR ABIERTO DE WIKIMEDIA (INMUNES A BLOQUEOS)
         const bancoCasos = [
             {
                 categoria: "A",
-                url: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAEwAMgBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=",
-                pista: "Extendido limpio con células escamosas intermedias maduras normales, núcleos vesiculares pequeños.",
-                retro: "¡Excelente! Es NILM. Las células muestran una morfología celular completamente sana."
+                url: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Normal_Pap_smear.jpg",
+                pista: "Células escamosas superficiales e intermedias maduras normales, extendido limpio, núcleos pequeños.",
+                retro: "¡Excelente! Es NILM. Patrón citológico normal sin ninguna alteración en la cromatina nuclear."
             },
             {
                 categoria: "C",
-                url: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAEwAMgBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=",
-                pista: "Coilocito nítido con halo perinuclear marcado y núcleo agrandado e hipercromático.",
-                retro: "¡Perfecto! Diagnóstico: LSIL. El efecto citopático por VPH es el elemento morfológico clave."
+                url: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Lsil2.jpg",
+                pista: "Coilocito clásico con halo perinuclear gigante, bien delimitado por un borde citoplasmático grueso.",
+                retro: "¡Perfecto! Es un LSIL. El efecto citopático del VPH es evidente por la cavitación y la atipia del núcleo."
             },
             {
                 categoria: "D",
-                url: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAEwAMgBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=",
-                pista: "Grupo sincitial con marcado amontonamiento de núcleos pequeños y severa pérdida de relación N/C.",
-                retro: "¡Así es! Es un HSIL. Cumple con los criterios de sospecha arquitectónica de alto grado."
+                url: "https://upload.wikimedia.org/wikipedia/commons/e/ee/Hsil1.jpg",
+                p6sta: "Placa sincitial con marcado amontonamiento nuclear, pérdida de la relación N/C y bordes nucleares irregulares.",
+                retro: "¡Excelente ojo clínico! Es un HSIL. Cumple los criterios estrictos de alto grado por la marcada atipia de grupo."
             },
             {
-                categoria: "B",
-                url: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAEwAMgBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=",
-                pista: "Agrandamiento nuclear moderado en células maduras sin criterios plenos para bajo grado.",
-                retro: "¡Buen ojo! Reporte: ASC-US. Atipia escamosa de significado indeterminado."
+                categoria: "A",
+                url: "https://upload.wikimedia.org/wikipedia/commons/a/aa/Intermediate_squamous_cells_in_cervical_smear_-_high_mag.jpg",
+                pista: "Predominio de células intermedias con núcleos vesiculares uniformes y plegamiento citoplasmático normal.",
+                retro: "¡Muy bien! Es NILM. Frotis con citología exfoliativa normal y núcleos estables."
+            },
+            {
+                categoria: "A",
+                url: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Navicular_cells.jpg",
+                pista: "Células naviculares con acumulación de glucógeno citoplasmático central y núcleos periféricos normales.",
+                retro: "¡Acertaste! Es NILM. Patrón citológico normal asociado frecuentemente a estados de carga progestacional."
             }
         ];
 
