@@ -8,9 +8,9 @@
         body { font-family: Arial, sans-serif; background-color: #F4F6F8; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         .header { background-color: #00A896; color: white; width: 100%; text-align: center; padding: 15px 0; font-weight: bold; font-size: 20px; letter-spacing: 1px; }
         .card { background: white; width: 90%; max-width: 500px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top: 20px; padding: 15px; box-sizing: border-box; text-align: center; }
-        .img-container { background-color: #1A1A1A; width: 100%; height: 260px; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 15px; border: 1px solid #DDD; position: relative; }
-        .img-container img { width: 100%; height: 100%; object-fit: contain; }
-        .micro-overlay { position: absolute; border: 4px solid #334155; width: 92%; height: 92%; border-radius: 50%; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.2); pointer-events: none; }
+        .img-container { background-color: #f7ece1; width: 100%; height: 260px; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 15px; border: 1px solid #DDD; position: relative; }
+        .img-container svg { width: 100%; height: 100%; }
+        .micro-overlay { position: absolute; border: 4px solid #334155; width: 92%; height: 92%; border-radius: 50%; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.2); pointer-events: none; top: 4%; left: 4%; box-sizing: border-box; }
         .pregunta { font-size: 16px; font-weight: bold; color: #333; margin-bottom: 15px; }
         .btn-pista { background-color: transparent; border: 1px solid #00A896; color: #00A896; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 14px; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 5px; font-weight: bold; }
         .pista-texto { display: none; background-color: #E6F6F4; border-left: 4px solid #00A896; padding: 12px; border-radius: 4px; font-size: 14px; color: #0f766e; margin-bottom: 15px; text-align: left; }
@@ -29,9 +29,9 @@
     <div class="header">MORFOLAB</div>
 
     <div class="card">
-        <div class="img-container">
+        <div id="contenedor-imagen" class="img-container">
             <div class="micro-overlay"></div>
-            <img id="campo-microscopico" src="" alt="Cargando frotis...">
+            <!-- El SVG se inyectará aquí de forma nativa -->
         </div>
         <div class="pregunta">¿Cuál es el diagnóstico o informe correcto para este campo microscópico?</div>
         
@@ -58,96 +58,68 @@
     </div>
 
     <script>
+        // Banco de datos con frotis celulares dibujados en código nativo (100% libre de bloqueos de red)
         const bancoCasos = [
+            // --- CASOS NILM (A) ---
             {
                 categoria: "A",
-                url: "https://webpath.med.utah.edu/FEMHTML/FEM001.jpg",
-                pista: "Células intermedias normales con núcleos vesiculares uniformes y citoplasma cianófilo amplio.",
-                retro: "¡Correcto! Es NILM. Campo citológico normal sin presencia de atipias morfológicas nucleares."
+                svg: `<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#fbeee2"/><g opacity="0.5"><circle cx="70" cy="60" r="4" fill="#a4c2db"/><circle cx="320" cy="240" r="5" fill="#aed6be"/></g><path d="M150,100 Q130,110 120,130 T140,170 T180,160 T190,120 Z" fill="#b2dbd5" stroke="#8ec4b9"/><circle cx="155" cy="135" r="4.5" fill="#4a213d"/><path d="M220,120 Q250,100 270,120 T260,160 T210,150 Z" fill="#f5b8c6" opacity="0.8" stroke="#e396a7"/><circle cx="240" cy="132" r="2.5" fill="#240c1d"/></svg>`,
+                pista: "Células escamosas maduras intermedias (cianófilas) y superficiales (eosinófilas) con núcleos pequeños y uniformes.",
+                retro: "¡Correcto! Es NILM. Patrón citológico normal con adecuada maduración celular y relaciones núcleo/citoplasma muy bajas."
             },
             {
                 categoria: "A",
-                url: "https://webpath.med.utah.edu/FEMHTML/FEM002.jpg",
-                pista: "Predominio de células escamosas superficiales con citoplasma eosinófilo y núcleos picnóticos puntiformes.",
-                retro: "¡Bien! Corresponde a NILM. Refleja un patrón de maduración estrogénica normal y fisiológica."
+                svg: `<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#faebd7"/><path d="M180,130 Q160,150 170,180 T210,190 T230,150 T200,120 Z" fill="#b9dfd6" stroke="#95ccbe"/><circle cx="198" cy="158" r="4" fill="#4d2441"/><path d="M120,80 Q140,70 160,90 T150,130 T110,120 Z" fill="#b9dfd6" stroke="#95ccbe"/><circle cx="135" cy="100" r="4" fill="#4d2441"/></svg>`,
+                pista: "Extendido compuesto por células intermedias normales con núcleos vesiculares redondos y cromatina fina.",
+                retro: "¡Bien! Es NILM. Se observa la morfología típica de las células intermedias estables sin atipias nucleares."
             },
             {
                 categoria: "A",
-                url: "https://webpath.med.utah.edu/FEMHTML/FEM003.jpg",
-                pista: "Extendido con células epiteliales normales y presencia de flora bacteriana bacilar compatible con lactobacilos.",
-                retro: "¡Excelente! Es NILM. Cambios reactivos o flora comensal normal sin criterios de lesión intraepitelial."
+                svg: `<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#fbeee2"/><path d="M200,100 Q230,90 250,110 T240,150 T190,140 Z" fill="#f7bdcb" stroke="#e69ba9"/><circle cx="220" cy="120" r="2" fill="#1f0718"/><path d="M130,160 Q160,150 170,180 T140,210 T110,190 Z" fill="#f7bdcb" stroke="#e69ba9"/><circle cx="140" cy="182" r="2" fill="#1f0718"/></svg>`,
+                pista: "Predominio de células superficiales normales con citoplasma plano extendido y núcleos picnóticos puntiformes.",
+                retro: "¡Excelente! NILM. Células maduras que reflejan el efecto estrogénico normal, sin criterios de atipia del sistema Bethesda."
             },
+
+            // --- CASOS ASC-US / ASC-H (B) ---
             {
-                categoria: "A",
-                url: "https://webpath.med.utah.edu/FEMHTML/FEM004.jpg",
-                pista: "Células maduras poligonales extendidas de forma regular, núcleos pequeños y relación N/C baja.",
-                retro: "¡Así es! Diagnóstico: NILM. Se confirma la total ausencia de atipia celular o criterios de Bethesda para lesión."
-            },
-            {
-                categoria: "A",
-                url: "https://webpath.med.utah.edu/FEMHTML/FEM016.jpg",
-                pista: "Células endocervicales normales dispuestas en panal de abejas, núcleos basales uniformes y citoplasma mucosecretor.",
-                retro: "¡Perfecto! Es NILM. Presencia de componente glandular endocervical normal, lo que valida la calidad de la muestra."
+                categoria: "B",
+                svg: `<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#f5eade"/><path d="M170,100 Q140,115 145,145 T185,175 T225,145 T205,105 Z" fill="#b6ded4" stroke="#8ec7ba"/><circle cx="180" cy="135" r="9" fill="#522f4b"/><path d="M230,150 Q250,140 270,160 T260,190 T220,180 Z" fill="#b6ded4" stroke="#8ec7ba"/><circle cx="245" cy="168" r="4" fill="#42203b"/></svg>`,
+                pista: "Agrandamiento nuclear moderado (2.5 veces) en una célula escamosa madura, pero sin la hipercromasia severa ni el halo neto de un LSIL.",
+                retro: "¡Buen criterio! Reporte: ASC-US. Existen cambios nucleares que sugieren lesión, pero cualitativamente no son concluyentes."
             },
             {
                 categoria: "B",
-                url: "https://webpath.med.utah.edu/FEMHTML/FEM015.jpg",
-                pista: "Agrandamiento nuclear moderado (2-3 veces) en células escamosas maduras, pero sin hipercromasia marcada ni halos delimitados.",
-                retro: "¡Correcto! Se informa como ASC-US. Cambios morfológicos que exceden lo reactivo pero no bastan para diagnosticar un LSIL definitivo."
+                svg: `<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#f5eade"/><g fill="#77a2c9" stroke="#5685ad"><path d="M180,120 q-15,15 -10,30 t30,10 t15,-25 z"/><path d="M195,140 q15,5 20,25 t-20,20 t-20,-20 z"/></g><circle cx="182" cy="140" r="11" fill="#2d162d"/><circle cx="200" cy="162" r="10" fill="#2d162d"/></svg>`,
+                pista: "Células pequeñas de tipo metaplásico con núcleos notablemente agrandados e hipercromáticos. Alta sospecha de lesión de alto grado.",
+                retro: "¡Excelente! Es un ASC-H. Células escamosas atípicas donde no se puede descartar un HSIL debido a la alta relación N/C."
             },
+
+            // --- CASOS LSIL (C) ---
             {
-                categoria: "B",
-                url: "https://webpath.med.utah.edu/FEMHTML/FEM019.jpg",
-                pista: "Células de tamaño metaplásico con núcleos agrandados y membranas ligeramente irregulares; sospecha de alto grado en células pequeñas.",
-                retro: "¡Buen ojo clínico! Es un ASC-H. Atipia en células escamosas que no permite descartar una lesión intraepitelial de alto grado."
-            },
-            {
-                categoria: "B",
-                url: "https://webpath.med.utah.edu/FEMHTML/FEM021.jpg",
-                pista: "Alteración nuclear nuclear aislada en células intermedias que plantea dudas diagnósticas por falta de criterios morfológicos plenos.",
-                retro: "¡Muy bien! Se clasifica como ASC-US. Se requiere el reporte cualitativo indeterminado bajo los criterios Bethesda."
+                categoria: "C",
+                svg: `<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#f3e5d8"/><path d="M150,90 Q110,110 120,160 T180,195 T240,150 T200,95 Z" fill="#9bc7ba" stroke="#75ab9d" stroke-width="2"/><path d="M155,115 Q140,125 150,150 T185,160 T195,140 T170,120 Z" fill="#f3e5d8"/><circle cx="170" cy="138" r="12" fill="#542e4c"/></svg>`,
+                pista: "Coilocito clásico: célula escamosa con un halo perinuclear gigante muy bien delimitado por un borde denso, y núcleo grande e irregular.",
+                retro: "¡Espectacular! Diagnóstico: LSIL. El halo perinuclear neto y la marcada hipercromasia nuclear definen la lesión de bajo grado (VPH)."
             },
             {
                 categoria: "C",
-                url: "https://webpath.med.utah.edu/FEMHTML/FEM005.jpg",
-                pista: "Coilocitosis evidente: células con un halo claro perinuclear neto, citoplasma periférico denso y núcleos hipercromáticos aumentados.",
-                retro: "¡Espectacular! Es un LSIL. El efecto citopático por virus del papiloma humano (VPH) está claramente expuesto aquí."
+                svg: `<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#f3e5d8"/><path d="M180,110 Q210,130 200,170 T140,190 T120,140 Z" fill="#95c4b7" stroke="#71aa9b"/><path d="M150,135 Q140,145 155,165 T180,155 Z" fill="#f3e5d8"/><circle cx="162" cy="150" r="11" fill="#4d2544"/><circle cx="176" cy="152" r="10" fill="#4d2544"/></svg>`,
+                pista: "Célula madura que muestra binucleación evidente con ambos núcleos agrandados, hipercromáticos y con membranas alteradas.",
+                retro: "¡Muy bien! Es un LSIL. La binucleación acompañada de atipia y aumento de volumen nuclear es un criterio clave bajo el sistema Bethesda."
             },
+
+            // --- CASOS HSIL (D) ---
             {
-                categoria: "C",
-                url: "https://webpath.med.utah.edu/FEMHTML/FEM006.jpg",
-                pista: "Células escamosas maduras que muestran binucleación, agrandamiento nuclear marcado e hipercromasia moderada.",
-                retro: "¡Acertaste! Es un LSIL (Bajo Grado). La presencia de binucleaciones y la hipercromasia nuclear apoyan firmemente el reporte."
-            },
-            {
-                categoria: "C",
-                url: "https://webpath.med.utah.edu/FEMHTML/FEM013.jpg",
-                pista: "Células intermedias con cavitación perinuclear verdadera y pleomorfismo nuclear leve a moderado.",
-                retro: "¡Excelente! Diagnóstico: LSIL. Los criterios clásicos de lesión de bajo grado se cumplen en este campo microscópico."
-            },
-            {
-                categoria: "C",
-                url: "https://webpath.med.utah.edu/FEMHTML/FEM014.jpg",
-                pista: "Muestra con coilocitos aislados distribuidos en un fondo citológico limpio.",
-                retro: "¡Así es! Es un LSIL. La presencia inequívoca de células coilocíticas confirma el diagnóstico morfológico de la lesión."
+                categoria: "D",
+                svg: `<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#f2e3d5"/><g fill="#6a94b8" stroke="#487396"><path d="M160,110 Q140,130 150,150 T180,160 T200,130 Z"/><path d="M180,130 Q160,150 170,170 T210,180 T220,140 Z"/><path d="M140,140 Q120,160 130,180 T165,175 Z"/></g><circle cx="175" cy="132" r="15" fill="#2b142b"/><circle cx="190" cy="155" r="14" fill="#260f26"/><circle cx="148" cy="158" r="13" fill="#2b142b"/></svg>`,
+                pista: "Grupo sincitial de células pequeñas e inmaduras. El citoplasma está drásticamente reducido y los núcleos están amontonados y deformes.",
+                retro: "¡Perfecto! Diagnóstico: HSIL. La pérdida crítica de la relación núcleo/citoplasma y el apiñamiento nuclear confirman el alto grado."
             },
             {
                 categoria: "D",
-                url: "https://webpath.med.utah.edu/FEMHTML/FEM007.jpg",
-                pista: "Células escamosas pequeñas e inmaduras dispuestas en agregados sincitiales con membranas nucleares irregulares y cromatina grumosa.",
-                retro: "¡Perfecto! Es un HSIL. Fíjate en la drástica alteración de la relación núcleo/citoplasma en todo el grupo celular."
-            },
-            {
-                categoria: "D",
-                url: "https://webpath.med.utah.edu/FEMHTML/FEM008.jpg",
-                pista: "Células aisladas con núcleos gigantes, hipercromasia severa, contornos angulados y citoplasma escaso en forma de fibra.",
-                retro: "¡Excelente análisis! Es un HSIL (Alto Grado). Las marcadas irregularidades de la membrana nuclear denotan una atipia severa."
-            },
-            {
-                categoria: "D",
-                url: "https://webpath.med.utah.edu/FEMHTML/FEM010.jpg",
-                pista: "Células parabasales atípicas, núcleos densos muy aumentados de tamaño que ocupan casi la totalidad del área celular.",
-                retro: "¡Magnífico! Reporte: HSIL. Pérdida severa de la maduración y criterios arquitectónicos y nucleares estrictos de alto grado."
+                svg: `<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#f2e3d5"/><path d="M180,120 Q150,140 160,180 T220,170 T210,130 Z" fill="#678fb4" stroke="#4a749c"/><path d="M175,140 Q165,150 185,165 Z" fill="#210a21"/><circle cx="190" cy="150" r="18" fill="#210a21"/></svg>`,
+                pista: "Célula aislada con marcada pérdida de citoplasma. El núcleo es gigante, hipercromático y con contornos nucleares angulados e irregulares.",
+                retro: "¡Excelente! Es un HSIL. Presenta criterios severos de atipia nuclear aislada, ocupando el núcleo más del 75% del área celular total."
             }
         ];
 
@@ -155,10 +127,17 @@
 
         function cargarCaso() {
             if (bancoCasos.length === 0) return;
+            
+            // Elegir caso al azar
             const indice = Math.floor(Math.random() * bancoCasos.length);
             casoActual = bancoCasos[indice];
             
-            document.getElementById("campo-microscopico").src = casoActual.url;
+            // Inyectar el SVG directo al contenedor de la imagen
+            const contenedor = document.getElementById("contenedor-imagen");
+            // Limpiar contenido anterior manteniendo el overlay del microscopio
+            contenedor.innerHTML = '<div class="micro-overlay"></div>' + casoActual.svg;
+            
+            // Resetear interfaz
             document.getElementById("pista-caja").innerText = casoActual.pista;
             document.getElementById("pista-caja").style.display = "none";
             document.getElementById("retro").style.display = "none";
@@ -209,6 +188,7 @@
             cargarCaso();
         }
 
+        // Iniciar la app al cargar la ventana
         window.onload = cargarCaso;
     </script>
 </body>
